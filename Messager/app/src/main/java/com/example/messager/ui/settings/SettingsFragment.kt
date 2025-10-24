@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.messager.databinding.FragmentSettingsBinding
+import com.example.messager.utils.ThemeManager
 
 class SettingsFragment : Fragment() {
 
@@ -25,6 +26,13 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         Log.d("Settings", "onCreateView")
+        val isDark = ThemeManager.isDarkModeEnabled(requireContext())
+        binding.switchDarkMode.isChecked = isDark
+
+        // Обработка переключения
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            ThemeManager.setDarkMode(requireContext(), isChecked)
+        }
         return root
     }
 
