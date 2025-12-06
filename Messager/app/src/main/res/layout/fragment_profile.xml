@@ -37,7 +37,7 @@
                 android:background="@drawable/bg_avatar"
                 android:layout_marginBottom="16dp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tvProfileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/row_edit_profile"
+                        android:id="@+id/row_edit_profile_test"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:orientation="horizontal"

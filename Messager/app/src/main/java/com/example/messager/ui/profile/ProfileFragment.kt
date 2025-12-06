@@ -1,14 +1,18 @@
 package com.example.messager.ui.profile
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.messager.databinding.FragmentProfileBinding
+import com.example.messager.ui.users.UsersViewModel
 
 class ProfileFragment : Fragment() {
 
@@ -22,8 +26,33 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         Log.d("Profile", "onCreateView")
+
+        val profileViewModel =
+            ViewModelProvider(this).get(ProfileViewModel::class.java)
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        val profileName: EditText = binding.tvProfileName
+        var isEditableProfile = false
+        profileName.isFocusable = isEditableProfile
+        profileName.isFocusableInTouchMode = isEditableProfile
+        binding.rowEditProfileTest.setOnClickListener {
+            isEditableProfile = !isEditableProfile
+            profileName.isFocusable = isEditableProfile
+            profileName.isFocusableInTouchMode = isEditableProfile
+
+        }
+        profileName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (isEditableProfile) {
+                    profileViewModel.updateText(s.toString())
+                }
+            }
+        })
+
 
         return root
     }
