@@ -29,7 +29,6 @@ class SettingsFragment : Fragment() {
         val isDark = ThemeManager.isDarkModeEnabled(requireContext())
         binding.switchDarkMode.isChecked = isDark
 
-        // Обработка переключения
         binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             ThemeManager.setDarkMode(requireContext(), isChecked)
         }

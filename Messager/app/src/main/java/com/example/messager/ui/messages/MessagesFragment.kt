@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.messager.databinding.FragmentMessagesBinding
 
 class MessagesFragment : Fragment() {
@@ -15,22 +16,40 @@ class MessagesFragment : Fragment() {
     private var _binding: FragmentMessagesBinding? = null
 
     private val binding get() = _binding!!
-
+    private lateinit var vm: MessagesViewModel
+    private lateinit var adapter: MessageAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
-        val messagesViewModel =
-            ViewModelProvider(this).get(MessagesViewModel::class.java)
         Log.d("Messages", "onCreateView")
 
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textMessages
-        messagesViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        vm = ViewModelProvider(this)[MessagesViewModel::class.java]
+
+        adapter = MessageAdapter {
+            vm.like(it.id, !it.liked)
+        }
+        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.adapter = adapter
+        binding.recycler.adapter = adapter
+
+        vm.messages.observe(viewLifecycleOwner) {
+            Log.d("Messages", "Messages received: ${it.size}")
+
+            adapter.submitList(it)
+        }
+        Log.d("Messages", "Before refresh")
+
+        vm.refresh()
+        Log.d("Messages", "After refresh")
+
+        binding.refreshFab.setOnClickListener {
+            vm.refresh()
         }
         return root
     }

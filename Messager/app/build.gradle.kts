@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt") version "1.9.10"
 }
 
 android {
@@ -48,7 +49,16 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.room.common.jvm)
+    implementation("androidx.room:room-runtime:2.8.4")
+    implementation("androidx.room:room-ktx:2.8.4")
+    implementation(libs.androidx.work.runtime.ktx)
     testImplementation(libs.junit)
+    implementation(libs.retrofit)
+    implementation(libs.retrofitConverterGson)
+    kapt("androidx.room:room-compiler:2.8.4")
+
+    implementation(libs.coroutinesAndroid)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-}
+    }

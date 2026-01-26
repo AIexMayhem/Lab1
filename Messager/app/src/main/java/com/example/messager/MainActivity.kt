@@ -7,7 +7,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.messager.data.SyncWorker
 import com.example.messager.databinding.ActivityMainBinding
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +34,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_profile, R.id.navigation_settings,
 
             )
+        )
+        val work = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.MINUTES).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "sync",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            work
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
